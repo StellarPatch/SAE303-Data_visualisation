@@ -1,0 +1,134 @@
+html{
+    cursor: none;
+}
+
+body{
+    margin: 0;
+    background-image: none;
+    background-size: 128%;
+    background-repeat: no-repeat;
+    background-position: top;
+    opacity: 0;
+    transition: 2s;
+}
+
+body.fade{
+    background-image: url(../img/background/DesktopStadium.png);
+    opacity: 1;
+}
+
+img{
+    height: auto;
+    width: 100%;
+}
+
+.version{
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    color: white;
+    font-family: genos;
+}
+
+main{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    .logo{
+        margin: auto;
+        margin-top: 64vh;
+        width: 33vw;
+    }
+
+    .login{
+        color: white;
+        text-align: center;
+        font-family: genos;
+        animation: brillance 3s infinite ease;
+    }
+}
+
+.transition{
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 100vw;
+    height: 100vh;
+    background: white;
+    transition: 1s ease-in;
+}
+
+.transition.add{
+    left: 0;
+}
+
+#curseur {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 24px;
+    height: 24px;
+
+    background-image: url("../img/pixloen_window/cursors/Normal\ Select.gif");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    pointer-events: none;
+    z-index: 999;
+
+    will-change: transform;
+    opacity: 1;
+    transition: opacity 0.2s ease;
+}
+
+#curseur.fade{
+    opacity: 0;
+}
+
+.cercle-clic {
+    position: fixed;
+    width: 32px;
+    height: 32px;
+    border: 2px solid rgb(212, 212, 212);
+    border-radius: 100%;
+
+    pointer-events: none;
+    z-index: 999;
+
+    transform: scale(0);
+    animation: onde-clic 0.5s ease-out forwards;
+}
+
+@font-face {
+    font-family: genos;
+    src: url("../fonts/Genos-VariableFont_wght.ttf");
+}
+
+@keyframes onde-clic {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(2);
+        opacity: 0;
+    }
+}
+
+@keyframes brillance {
+    0% {
+        opacity: 100%;
+    }
+
+    50% {
+        opacity: 0%;
+    }
+
+    100% {
+        opacity: 100%;
+    }
+}
