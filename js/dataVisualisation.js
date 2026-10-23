@@ -7,6 +7,9 @@ const sprite = document.querySelector(".sprite");
 const audioGate = document.querySelector("#audio-gate");
 const gate = document.querySelector("#gate");
 var gateStatue = false;
+var fond;
+const couleurIrons = ["#FFE07C","#7CEBFF","#77EF96",null];
+const statistique = document.querySelector("#statistique");
 
 (function init() {
     spriteSelection();
@@ -19,7 +22,7 @@ var gateStatue = false;
     curseur.classList.add("fade");
 
     // active le curseur custom + effet de click
-    document.addEventListener("mousemove",cursor)
+    document.addEventListener("mousemove", cursor)
     // créer des FX de cercle lors des clicks
     document.addEventListener("click", cliquer);
 
@@ -36,7 +39,7 @@ var gateStatue = false;
 })();
 
 function main() {
-    gate.addEventListener("click",gateChange);
+    gate.addEventListener("click", gateChange);
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -53,16 +56,16 @@ function cursor(event) {
 function cliquer(event) {
     const cercle = document.createElement("div");
 
-        cercle.classList.add("cercle-clic");
+    cercle.classList.add("cercle-clic");
 
-        cercle.style.left = `${positionX}px`;
-        cercle.style.top = `${positionY}px`;
+    cercle.style.left = `${positionX}px`;
+    cercle.style.top = `${positionY}px`;
 
-        document.body.appendChild(cercle);
+    document.body.appendChild(cercle);
 
-        cercle.addEventListener("animationend", () => {
-            cercle.remove();
-        });
+    cercle.addEventListener("animationend", () => {
+        cercle.remove();
+    });
 }
 
 function spriteSelection(event) {
@@ -71,26 +74,80 @@ function spriteSelection(event) {
 }
 
 function spriteAnimation(x) {
-    if (x == false){
+    if (x == false) {
         sprite.classList.add("on");
     }
     else {
         sprite.classList.add("start");
-        setTimeout(()=>{sprite.classList.add("off");},500)
+        setTimeout(() => { sprite.classList.add("off"); }, 500)
     }
 }
 
 function gateChange() {
-    if (gateStatue == false){
+    if (gateStatue == false) {
+        fond = setInterval(background, 1000);
         document.querySelector("#gate>img").src = "img/assets/gateOpen.png";
+        audio("audioGate");
+        statistique.classList.toggle("active");
         gateStatue = true;
     }
-    else{
+    else {
+        // Annule l'intervalle
+        clearInterval(fond);
         document.querySelector("#gate>img").src = "img/assets/gateClosed.png";
+        audio("audioGate");
+        statistique.classList.toggle("active");
         gateStatue = false;
     }
 }
 
 function background() {
+    // option css aléatioire entre taille et couleur des fers à cheval
+    let size = Math.random() * 40 + 50;
+    let couleur = couleurIrons[Math.floor(Math.random() * couleurIrons.length)];
+    let random = Math.random();
 
+    // création du svg avec les options
+    const svg = `<svg class="iron" width="${size}px" height="${size}px" viewBox="0 0 300 302" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+            d="M116.534 44.6477L43.989 0.573064C42.3109 -0.446447 40.139 -0.0736964 38.8784 1.43714C15.2025 29.8127 7.34669 37.152 7.41846 39.3363C7.42805 39.628 7.67485 39.8345 7.90075 40.0174L27.7461 56.0866C29.2768 57.3261 29.6757 59.5008 28.7208 61.229C13.5754 88.6379 1.06875 127.543 0.110676 149.242C-1.15126 177.823 8.05761 233.629 44.3154 264.242C91.785 304.321 119.071 301.766 149.698 301.742C180.342 301.764 207.632 304.34 255.123 264.242C291.381 233.629 300.59 177.824 299.328 149.242C298.37 127.543 285.863 88.6379 270.718 61.2291C269.763 59.5008 270.162 57.3261 271.692 56.0866L291.538 40.0175C291.764 39.8346 292.01 39.628 292.02 39.3363C292.092 37.1521 284.236 29.8127 260.56 1.43718C259.3 -0.0736659 257.128 -0.446417 255.45 0.573094L182.905 44.6477C180.719 45.9757 180.302 49.0087 182.008 50.9209C188.581 58.2893 202.899 75.3829 207.938 89.7423C213.337 105.124 218.616 131.247 214.395 156.742C211.912 171.742 206.42 187.187 189.561 198.742C166.747 214.379 157.96 213.301 150.618 213.244C143.642 213.302 132.687 214.376 109.877 198.742C93.0181 187.187 87.5268 171.742 85.0434 156.742C80.8224 131.247 86.1017 105.124 91.5002 89.7422C96.54 75.3829 110.857 58.2892 117.43 50.9209C119.136 49.0087 118.72 45.9757 116.534 44.6477Z"
+            fill="${couleur}" />
+    </svg>`;
+
+    // ajout du svg sur la page
+    document.body.insertAdjacentHTML("beforeend", svg);
+
+    // récupère le svg qui viens d'être créer
+    const iron = document.body.lastElementChild;
+
+    iron.style.position = "absolute";
+    iron.style.left = Math.random() * window.innerWidth + "px";
+    iron.style.bottom = -128 + "px";
+
+    if (random <= 0.33){
+        iron.style.animation = "iron 10s infinite linear";
+    }
+    else {
+        if (random <= 0.66) {
+            iron.style.animation = "iron2 10s infinite linear";
+        }
+        else{
+            iron.style.animation = "iron3 10s infinite linear";
+        }
+    }
+    
+
+    // le fait disparaitre hors de l'écran pour éviter lag
+    setTimeout(() => {
+        iron.remove();
+    }, 30000);
+}
+
+function audio(x) {
+    // utilise l'ID comme paramètre
+    var a = document.querySelector("#"+ x);
+    a.loop = false;
+    a.volume = 1
+    a.currentTime = 0;
+    a.play();
 }

@@ -9,7 +9,7 @@ body{
     background-repeat: no-repeat;
     background-position: top;
 
-    overflow-y: hidden;
+    overflow: hidden;
 }
 
 img{
@@ -17,17 +17,42 @@ img{
     width: 100%;
 }
 
+.iron{
+    z-index: -999;
+    animation: iron 5s infinite linear;
+}
+
 #gate {
     /* position: fixed; */
     /* bottom: 0; */
     margin: auto;
-    margin-top: calc(100vh - 128px);
-    width: 128px;
+    margin-top: calc(100vh - 167px);
+    width: 192px;
     transition: 0.2s;
 }
 
 #gate:active{
     scale: 1.2;
+}
+
+#statistique{
+    position: fixed;
+    left: 0;
+    top: 0;
+
+    background: url("../img/background/bg_nav.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: center;
+
+    height: 100vh;
+    min-width: 256px;
+    transform: translateX(-100%);
+    transition: 0.2s ease;
+}
+
+#statistique.active{
+    transform: translateX(0%);
 }
 
 .transition{
@@ -149,5 +174,32 @@ img{
 
     100% {
         opacity: 100%;
+    }
+}
+
+@keyframes iron {
+    0% {
+        transform: translate(-20vw,0) rotate(0deg)
+    }
+    100% {
+        transform: translate(20vw,-150vh) rotate(-360deg)
+    }
+}
+
+@keyframes iron2 {
+    0% {
+        transform: translate(-20vw,0) rotate(0deg)
+    }
+    100% {
+        transform: translate(20vw,-150vh) rotate(-180deg)
+    }
+}
+
+@keyframes iron3 {
+    0% {
+        transform: translate(-20vw,0) rotate(0deg)
+    }
+    100% {
+        transform: translate(20vw,-150vh) rotate(-720deg)
     }
 }
