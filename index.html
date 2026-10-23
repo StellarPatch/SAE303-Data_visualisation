@@ -4,19 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>U=ma²</title>
-    <link rel="stylesheet" href="styles/mobile.css">
+    <link rel="stylesheet" href="styles/index.css">
+    <link rel="shortcut icon" href="img/favicon.webp" type="image/x-icon">
 </head>
 <body>
+    <!-- éléments dynamique lié au curseur -->
     <div id="curseur"></div>
     <div id="effets-clic"></div>
 
+    <!-- ------------------ MAIN -------------------- -->
     <div class="version">Ver. SAE. 3.03</div>
     <main>
         <section class="logo"><img src="img/Umamusume_Pretty_Derby_Logo.png" alt=""></section>
         <div class="login">LOG IN</div>
     </main>
+    
+    <!-- fond de transition blanc -->
     <section class="transition"></section>
 
+    <!-- audio invisible -->
+    <audio id="audio-title-screen" src="audio/all-title-screen-voice.mp3"></audio>
+
+    <script src="js/data.js"></script>
     <script src="js/index.js"></script>
 </body>
 </html>

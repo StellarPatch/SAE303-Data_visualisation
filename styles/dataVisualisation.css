@@ -8,6 +8,8 @@ body{
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: top;
+
+    overflow-y: hidden;
 }
 
 img{
@@ -15,18 +17,24 @@ img{
     width: 100%;
 }
 
-.version{
-    position: absolute;
-    top: 16px;
-    left: 16px;
-    color: white;
-    font-family: genos;
+#gate {
+    /* position: fixed; */
+    /* bottom: 0; */
+    margin: auto;
+    margin-top: calc(100vh - 128px);
+    width: 128px;
+    transition: 0.2s;
+}
+
+#gate:active{
+    scale: 1.2;
 }
 
 .transition{
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    justify-content: center;
+    align-items: center;
 
     position: fixed;
     top: 0;
@@ -34,16 +42,36 @@ img{
     width: 100vw;
     height: 100vh;
     background: white;
-    transition: 0.2s ease-in;
+    transition: 0.67s ease-out;
 
     .sprite{
         margin: auto;
-        margin-top: 25vh;
-        width: 256px;
+        margin-top: 10vh;
+        margin-bottom: 0;
+        width: 192px;
+        height: 192px;
+        opacity: 0;
+        transform: translateX(64px);
+        transition: 0.5s ease;
     }
 
-    .login{
-        color: white;
+    .sprite.on{
+        opacity: 1;
+        transform: translateX(0px);
+    }
+
+    .sprite.on.start{
+        opacity: 1;
+        transform: translateX(32px);
+    }
+
+    .sprite.on.start.off{
+        opacity: 0;
+        transform: translateX(-64px);
+    }    
+
+    .loading{
+        color: rgb(18, 15, 15);
         text-align: center;
         font-family: genos;
         animation: brillance 3s infinite ease;
@@ -72,7 +100,7 @@ img{
 
     will-change: transform;
     opacity: 0;
-    transition: opacity 0.2s ease;
+    transition: opacity 1s ease;
 }
 
 #curseur.fade{
