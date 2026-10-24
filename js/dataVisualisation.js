@@ -1,4 +1,5 @@
 const params = new URLSearchParams(window.location.search);
+// save la position du curseur de la page précédente sinon ça fait bizzard
 var positionX = params.get("positionX");
 var positionY = params.get("positionY");
 const curseur = document.querySelector("#curseur");
@@ -7,9 +8,11 @@ const sprite = document.querySelector(".sprite");
 const audioGate = document.querySelector("#audio-gate");
 const gate = document.querySelector("#gate");
 var gateStatue = false;
+// Initialise la variable en global pour pouvoir clear l'intervale
 var fond;
 const couleurIrons = ["#FFE07C","#7CEBFF","#77EF96",null];
 const statistique = document.querySelector("#statistique");
+var bouttons = ["a","a","a"];
 
 (function init() {
     spriteSelection();
@@ -87,16 +90,20 @@ function gateChange() {
     if (gateStatue == false) {
         fond = setInterval(background, 1000);
         document.querySelector("#gate>img").src = "img/assets/gateOpen.png";
-        audio("audioGate");
+        audio("audioGate","play",false);
+        audio("lobbyMusic","play",true);
         statistique.classList.toggle("active");
+        bouttonDisplay();
         gateStatue = true;
     }
     else {
         // Annule l'intervalle
         clearInterval(fond);
         document.querySelector("#gate>img").src = "img/assets/gateClosed.png";
-        audio("audioGate");
+        audio("audioGate","play",false);
+        audio("lobbyMusic","pause",true);
         statistique.classList.toggle("active");
+        bouttonDisplay();
         gateStatue = false;
     }
 }
@@ -135,19 +142,36 @@ function background() {
             iron.style.animation = "iron3 10s infinite linear";
         }
     }
-    
 
-    // le fait disparaitre hors de l'écran pour éviter lag
+    // le fait disparaitre hors de l'écran pour éviter d'avoir 6700000000 éléments sur la page
     setTimeout(() => {
         iron.remove();
-    }, 30000);
+    }, 10000);
 }
 
-function audio(x) {
+// fait apparaitre les bouttons avec du délais
+function bouttonDisplay() {
+    let timer = 0
+    // à modifier, utiliser la taille d'un tableau pour gérer plus tard
+    for (let i = 1; i <= 3; i++) {
+        setTimeout(() => {
+            document.querySelector("#menu>.boutton:nth-child(" + i + ")").classList.toggle("active");    
+        }, timer);
+        timer += 100;
+    }
+}
+
+// fonction pour le son, paramètres => ID html, action (play/pause),loop(true/false), delay
+function audio(id,methode,loop) {
     // utilise l'ID comme paramètre
-    var a = document.querySelector("#"+ x);
-    a.loop = false;
+    var a = document.querySelector("#"+ id);
+    a.loop = loop;
     a.volume = 1
     a.currentTime = 0;
-    a.play();
+    if (methode == "play"){
+        a.play();
+    }
+    if (methode == "pause"){
+        a.pause();
+    }
 }

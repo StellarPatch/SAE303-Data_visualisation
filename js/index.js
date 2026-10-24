@@ -4,6 +4,7 @@ const curseur = document.querySelector("#curseur");
 const body = document.querySelector("body");
 const audio = document.querySelector("#audio-title-screen");
 const transition = document.querySelector(".transition");
+const logoCygame = document.querySelector("#Cygame");
 
 // position X et Y du curseur
 var positionX = 0;
@@ -41,9 +42,21 @@ var duree = timecodeToSeconds(timecodeEnd) - timecodeToSeconds(timecode);
 
     // change de page avec des effets stylax
     document.addEventListener("click", (e) => {
+        // joue un audio aléatoire à chaque fois qu'on viens sur la page avec un timecode
         audioIntro();
         curseur.classList.add("fade");
         transition.classList.add("add");
+
+        // partie pour les crédits
+        setTimeout(()=> {
+            logoCygame.classList.add("active");
+        }, 1250)
+
+        setTimeout(() => {
+            logoCygame.classList.remove("active");
+        }, duree*1000 - 1000);
+
+        // renvoie vers une autre page le temps de l'audio
         setTimeout(() => {
             window.open("dataVisualisation.html?positionX=" + positionX + "&positionY=" + positionY, "_self")
         }, duree*1000);
@@ -97,4 +110,5 @@ function audioIntro() {
         setTimeout(() => {
             audio.pause();
         }, duree * 1000);
+        // console.log(timecode);
 }

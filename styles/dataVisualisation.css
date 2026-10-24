@@ -25,6 +25,7 @@ img{
 #gate {
     /* position: fixed; */
     /* bottom: 0; */
+    position: relative;
     margin: auto;
     margin-top: calc(100vh - 167px);
     width: 192px;
@@ -33,6 +34,27 @@ img{
 
 #gate:active{
     scale: 1.2;
+}
+
+#gate::before,
+#gate::after {
+    content: "✦  ✧  ✦";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 150px;
+    color: #fff78a;
+    font-size: 18px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#gate:active::before {
+    animation: stars-top 0.5s ease-out;
+}
+
+#gate:active::after {
+    animation: stars-bottom 0.5s ease-out;
 }
 
 #statistique{
@@ -53,6 +75,31 @@ img{
 
 #statistique.active{
     transform: translateX(0%);
+}
+
+#menu{
+    display: flex;
+    justify-content: space-around;
+    gap: 32px;
+    position: fixed;
+    bottom: 0;
+    right: 64px;
+
+    .boutton{
+        background: white;
+        height: 96px;
+        width: 96px;
+
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+
+        transform: translateY(96px);
+        transition: 0.2s ease;
+    }
+
+    .boutton.active{
+        transform: translateY(0);
+    }
 }
 
 .transition{
@@ -201,5 +248,29 @@ img{
     }
     100% {
         transform: translate(20vw,-150vh) rotate(-720deg)
+    }
+}
+
+@keyframes stars-top {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -140%) scale(1.5);
+    }
+}
+
+@keyframes stars-bottom {
+    0% {
+        opacity: 1;
+        transform: translate(0%, -50%) scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(50%, 80%) scale(1.5);
     }
 }

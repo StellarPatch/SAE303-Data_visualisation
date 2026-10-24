@@ -57,6 +57,28 @@ main{
     height: 100vh;
     background: white;
     transition: 1s ease-in;
+
+    display: flex;
+    flex-direction: column;
+
+    #Cygame{   
+        height: auto;
+        width: 50%;
+        margin: auto;
+        opacity: 0;
+        transition: 0.2s ease;
+    }
+
+    #Cygame.active{
+        opacity: 1;
+    }
+
+    .credit{
+        margin-left: auto;
+        margin-right: 16px;
+        margin-bottom: 4px;
+        font-family: genos;
+    }
 }
 
 .transition.add{
