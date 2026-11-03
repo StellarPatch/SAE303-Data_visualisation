@@ -12,7 +12,10 @@ var gateStatue = false;
 var fond;
 const couleurIrons = ["#FFE07C","#7CEBFF","#77EF96",null];
 const statistique = document.querySelector("#statistique");
-var bouttons = ["a","a","a"];
+const boutton1 = document.querySelector("#menu>.boutton:nth-child(1)");
+const boutton2 = document.querySelector("#menu>.boutton:nth-child(2)");
+const boutton3 = document.querySelector("#menu>.boutton:nth-child(3)");
+var bouttons = [false,false,false];
 
 (function init() {
     spriteSelection();
@@ -42,7 +45,12 @@ var bouttons = ["a","a","a"];
 })();
 
 function main() {
+    bouttonSelection(0);
     gate.addEventListener("click", gateChange);
+    
+    boutton1.addEventListener("click", () => bouttonSelection(0));
+    boutton2.addEventListener("click", () => bouttonSelection(1));
+    boutton3.addEventListener("click", () => bouttonSelection(2));
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -86,7 +94,7 @@ function spriteAnimation(x) {
     }
 }
 
-function gateChange() {
+function gateChange(event) {
     if (gateStatue == false) {
         fond = setInterval(background, 1000);
         document.querySelector("#gate>img").src = "img/assets/gateOpen.png";
@@ -159,6 +167,32 @@ function bouttonDisplay() {
         }, timer);
         timer += 100;
     }
+}
+
+function bouttonSelection(x) {
+
+    // réinitialise la valeur des boutons
+    bouttons = [false, false, false];
+
+    // MAJ celui sélectionner pour lui donner sa couleur de fond
+    bouttons[x] = true;
+
+    // check tout les bouttons pour changer la couleurs de fond
+    bouttons.forEach((e,i) => {
+        let menu = document.querySelector("#menu>.boutton:nth-child("+(i+1)+")");
+        if (e == true){
+            menu.classList.add("selectionner");
+        }
+        else{
+            menu.classList.remove("selectionner");
+        }
+    });
+
+    dataVisualisation();
+}
+
+function dataVisualisation(event) {
+
 }
 
 // fonction pour le son, paramètres => ID html, action (play/pause),loop(true/false), delay
