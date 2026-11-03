@@ -66,31 +66,97 @@ img {
     left: 0;
     top: 0;
 
-    background: url("../img/background/bg_nav.jpg");
+    background-image: url("../img/background/bg_nav.jpg");
     background-repeat: no-repeat;
     background-size: 100%;
     background-position: center;
 
     height: 100vh;
-    max-width: 16vw;
+    width: 20vw;
     transform: translateX(-100%);
     transition: 0.2s ease;
 
-    .content {
-        position: relative;
-    }
-
     h1 {
         font-family: UDK;
-        font-size: 32px;
+        font-size: 24px;
         color: white;
         position: absolute;
         top: 0;
         margin-left: 32px;
     }
+
+    .content {
+        position: relative;
+    }
+
+    .grid{
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: auto;
+        place-items: center;
+
+        margin-top: 128px;
+        padding: 8px 8px;
+        gap: 8px;
+
+        height: calc(100vh - 150px);
+        overflow-y: scroll;
+    }
+
+    .character{
+        height: 4vw;
+        width: 4vw;
+        /* background-image: url("https://images.microcms-assets.io/assets/973fc097984b400db8729642ddff5938/d062be63cff04d7b861e3f735c9b0ae0/admiregroove_icon.png"); */
+        background-size: 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        border-radius: 4px;
+        transition: 0.2s ease;
+    }
+
+    .character:active{
+        transform: scale(1.1);
+    }
 }
 
 #statistique.active {
+    transform: translateX(0%);
+}
+
+#inventaire{
+    position: fixed;
+    top: 15vh;
+    right: 16px;
+
+    height: 60vh;
+    width: 64px;
+    padding: 16px 0;
+
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 16px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+    transform: translateX(130%);
+
+    transition: 0.2s ease;
+
+    .character{
+        height: 2.75vw;
+        width: 2.75vw;
+        /* background-image: url("https://images.microcms-assets.io/assets/973fc097984b400db8729642ddff5938/d062be63cff04d7b861e3f735c9b0ae0/admiregroove_icon.png"); */
+        background-size: 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        border-radius: 4px;
+        animation: spawn 1s ease;
+    }
+}
+
+#inventaire.active{
     transform: translateX(0%);
 }
 
@@ -301,5 +367,17 @@ img {
     100% {
         opacity: 0;
         transform: translate(50%, 80%) scale(1.5);
+    }
+}
+
+@keyframes spawn {
+    0% {
+        opacity: 0;
+        transform: scale(1.2);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
     }
 }

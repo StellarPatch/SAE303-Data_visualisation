@@ -10,12 +10,14 @@ const gate = document.querySelector("#gate");
 var gateStatue = false;
 // Initialise la variable en global pour pouvoir clear l'intervale
 var fond;
-const couleurIrons = ["#FFE07C","#7CEBFF","#77EF96",null];
+const couleurIrons = ["#FFE07C", "#7CEBFF", "#77EF96", null];
 const statistique = document.querySelector("#statistique");
+const inventaire = document.querySelector("#inventaire");
 const boutton1 = document.querySelector("#menu>.boutton:nth-child(1)");
 const boutton2 = document.querySelector("#menu>.boutton:nth-child(2)");
 const boutton3 = document.querySelector("#menu>.boutton:nth-child(3)");
-var bouttons = [false,false,false];
+var bouttons = [false, false, false];
+var courseListe = [];
 
 (function init() {
     spriteSelection();
@@ -47,10 +49,18 @@ var bouttons = [false,false,false];
 function main() {
     bouttonSelection(0);
     gate.addEventListener("click", gateChange);
-    
+
     boutton1.addEventListener("click", () => bouttonSelection(0));
     boutton2.addEventListener("click", () => bouttonSelection(1));
     boutton3.addEventListener("click", () => bouttonSelection(2));
+
+    document.querySelectorAll("#statistique>.grid>.character").forEach(e => {
+        e.addEventListener("click", addInventaire)
+    });
+
+    document.querySelectorAll("#inventaire>.character").forEach(e => {
+        e.addEventListener("click", removeInventaire)
+    });
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -98,9 +108,10 @@ function gateChange(event) {
     if (gateStatue == false) {
         fond = setInterval(background, 1000);
         document.querySelector("#gate>img").src = "img/assets/gateOpen.png";
-        audio("audioGate","play",false);
-        audio("lobbyMusic","play",true);
+        audio("audioGate", "play", false);
+        audio("lobbyMusic", "play", true);
         statistique.classList.toggle("active");
+        inventaire.classList.toggle("active");
         bouttonDisplay();
         gateStatue = true;
     }
@@ -108,9 +119,10 @@ function gateChange(event) {
         // Annule l'intervalle
         clearInterval(fond);
         document.querySelector("#gate>img").src = "img/assets/gateClosed.png";
-        audio("audioGate","play",false);
-        audio("lobbyMusic","pause",true);
+        audio("audioGate", "play", false);
+        audio("lobbyMusic", "pause", true);
         statistique.classList.toggle("active");
+        inventaire.classList.toggle("active");
         bouttonDisplay();
         gateStatue = false;
     }
@@ -139,14 +151,14 @@ function background() {
     iron.style.left = Math.random() * window.innerWidth + "px";
     iron.style.bottom = -128 + "px";
 
-    if (random <= 0.33){
+    if (random <= 0.33) {
         iron.style.animation = "iron 10s infinite linear";
     }
     else {
         if (random <= 0.66) {
             iron.style.animation = "iron2 10s infinite linear";
         }
-        else{
+        else {
             iron.style.animation = "iron3 10s infinite linear";
         }
     }
@@ -163,7 +175,7 @@ function bouttonDisplay() {
     // à modifier, utiliser la taille d'un tableau pour gérer plus tard
     for (let i = 1; i <= 3; i++) {
         setTimeout(() => {
-            document.querySelector("#menu>.boutton:nth-child(" + i + ")").classList.toggle("active");    
+            document.querySelector("#menu>.boutton:nth-child(" + i + ")").classList.toggle("active");
         }, timer);
         timer += 100;
     }
@@ -178,12 +190,12 @@ function bouttonSelection(x) {
     bouttons[x] = true;
 
     // check tout les bouttons pour changer la couleurs de fond
-    bouttons.forEach((e,i) => {
-        let menu = document.querySelector("#menu>.boutton:nth-child("+(i+1)+")");
-        if (e == true){
+    bouttons.forEach((e, i) => {
+        let menu = document.querySelector("#menu>.boutton:nth-child(" + (i + 1) + ")");
+        if (e == true) {
             menu.classList.add("selectionner");
         }
-        else{
+        else {
             menu.classList.remove("selectionner");
         }
     });
@@ -192,20 +204,66 @@ function bouttonSelection(x) {
 }
 
 function dataVisualisation(event) {
+    if (bouttons[0] == true) {
+        const grid = document.querySelector(".grid");
+        var liste = "";
+
+        characterInfo.forEach((e, i) => {
+            liste += '<div id="' + e["preferred_url"] + '" class="character" style="background-image: url(' + e["sns_icon"] + ');"></div>'
+        });
+
+        grid.innerHTML = liste;
+    }
+}
+
+function addInventaire(event) {
+    // max 13 cheveaux et pas déjà dans la liste
+    if ((courseListe.length) <= 8 && !(courseListe.includes(this.id))) {
+        courseListe.push(this.id);
+        gestionInventaire();
+    }
+}
+
+function removeInventaire(event) {
 
 }
 
+function gestionInventaire() {
+    var div = document.createElement("div");
+
+    if (courseListe.length > 0) {
+        courseListe.forEach(e => {
+            div.classList.add("character");
+            div.style.backgroundImage = `url('${characterInfo[idCharacter(e)]["sns_icon"]}')`;
+            document.querySelector("#inventaire").appendChild(div);
+            // console.log(div);
+        });
+    }
+}
+
+// retourne l'index du personnage à partir de l'ID
+function idCharacter(x) {
+    let index = 0;
+    characterInfo.forEach((e, i) => {
+        if (e["preferred_url"] == x) {
+            index = i;
+        }
+    })
+
+    return index
+}
+
 // fonction pour le son, paramètres => ID html, action (play/pause),loop(true/false), delay
-function audio(id,methode,loop) {
+function audio(id, methode, loop) {
     // utilise l'ID comme paramètre
-    var a = document.querySelector("#"+ id);
+    var a = document.querySelector("#" + id);
     a.loop = loop;
     a.volume = 1
     a.currentTime = 0;
-    if (methode == "play"){
+    if (methode == "play") {
         a.play();
     }
-    if (methode == "pause"){
+    if (methode == "pause") {
         a.pause();
     }
 }
